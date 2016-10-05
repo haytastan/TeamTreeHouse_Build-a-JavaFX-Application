@@ -1,0 +1,38 @@
+<!--VIEW FILE-->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TextField?>
+<GridPane fx:controller="sample.Controller"
+          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+    <!--fx:controller is attribute name, sample.Controller is attr value -->
+    <!--fx is namespace and fx namespace is defined in http://javafx.com/fxml url-->
+    <!--we happen to validate with fx prefix-->
+
+    <!-- we access property of parent element -->
+    <Text text="Sup"
+          GridPane.rowIndex="0"
+          GridPane.columnSpan="2"
+          GridPane.halignment="CENTER"/>
+
+    <Label text="First Name:"
+           GridPane.rowIndex="1"
+           GridPane.columnIndex="0"/>
+
+    <!--naming allows us to reference it specifically in the controller-->
+    <TextField fx:id="firstName"
+            GridPane.rowIndex="1"
+            GridPane.columnIndex="1"/>
+
+    <!--calls the handleSaySup method once the button is clicked (onAction executed)-->
+    <Button text="Say Sup!"
+            onAction="#handleSaySup"
+            GridPane.rowIndex="2"
+            GridPane.columnIndex="1"
+            GridPane.halignment="RIGHT"/>
+
+</GridPane>

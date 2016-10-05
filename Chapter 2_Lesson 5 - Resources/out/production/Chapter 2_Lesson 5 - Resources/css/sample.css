@@ -1,0 +1,28 @@
+/*EXTERNAL CSS is preferred as in here.
+the beauty of external css is that we can style all scenes with one css file
+ we also happen to separate structure/style from the content/presentation*/
+
+
+/*root node (gridpane) has default root class*/
+.root {
+    -fx-font-family: Papyrus;
+    -fx-alignment:center;
+    -fx-hgap:10;
+    -fx-vgap:10
+}
+
+.title {
+    -fx-font-size: 100px;
+    -fx-fill: AQUA
+}
+
+/*text-field class name is default*/
+.text-field {
+    -fx-font-family: Vivaldi;
+}
+
+#firstName {
+    -fx-background-color:yellow;
+    -fx-font-family: Impact;
+}
+/*the more specific a selector, the stronger it is*/
