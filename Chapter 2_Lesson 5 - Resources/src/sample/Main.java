@@ -30,6 +30,7 @@ public class Main extends Application{
         grid.add(btn, 1, 1);
         btn.setText("Say Sup!");
         btn.setOnAction(evt -> System.out.printf("Sup %s!%n", nameFld.getText())); // evt is argument
+        // *setOnAction metodunun parameterı "EventHandler<ActionEvent> value" dur*
         VBox box = new VBox();
         box.getChildren().addAll(txt, grid);
         root.getChildren().add(box);*/

@@ -32,7 +32,8 @@
                GridPane.rowIndex="1"
                GridPane.columnIndex="1"/>
 
-    <!--calls the handleSaySup method once the button is clicked (onAction executed)-->
+    <!--calls the handleSaySup method once the button is clicked (onAction executed)
+    *button'a handleSaySup pass edilmiş gibi olur (?)*-->
     <Button text="Say Sup!"
             onAction="#handleSaySup"
             GridPane.rowIndex="2"

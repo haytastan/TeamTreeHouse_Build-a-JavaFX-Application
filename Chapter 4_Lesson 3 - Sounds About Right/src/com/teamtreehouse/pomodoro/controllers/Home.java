@@ -2,66 +2,98 @@ package com.teamtreehouse.pomodoro.controllers;
 
 import com.teamtreehouse.pomodoro.model.Attempt;
 import com.teamtreehouse.pomodoro.model.AttemptKind;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
+import javafx.util.Duration;
 
 public class Home {
+    private final AudioClip mApplause;
     @FXML
     private VBox container;
 
     @FXML
     private Label title;
 
+    @FXML
+    private TextArea message;
+
     private Attempt mCurrentAttempt;
     private StringProperty mTimerText;
-    // StringProperty is abstract
+    private Timeline mTimeline;
 
-    // creates timer text and sets the default timer
-    // constructor otomatik olarak çağırılıyor fxml'in controllerına eklenince (?)
     public Home() {
-        // SimpleStringProperty extends StringProperty
         mTimerText = new SimpleStringProperty();
         setTimerText(0);
+        mApplause = new AudioClip(getClass().getResource("/sounds/applause.mp3").toExternalForm());
+//        toExternalForm() generates a file URL
     }
 
-    // getter (for javafx file)
     public String getTimerText() {
         return mTimerText.get();
     }
 
-    // the new part special to javafx
     public StringProperty timerTextProperty() {
         return mTimerText;
     }
 
-    // setter: sets the timer through ref var
     public void setTimerText(String timerText) {
         mTimerText.set(timerText);
     }
-//    *javafx has getter, setter and a special javafx property object.
-//    if we didn't pass integer to the setTimerText method
-//    above 4 methods would be standard to reference
-//    label in fxml with time id.
-//    by using binding method we don't use the id name of "time" on fxml*
 
-    // *overrides the setTimerText method*
     public void setTimerText(int remainingSeconds) {
         int minutes = remainingSeconds / 60;
         int seconds = remainingSeconds % 60;
         setTimerText(String.format("%02d:%02d", minutes, seconds));
     }
 
-    // initialized with user input
     private void prepareAttempt(AttemptKind kind) {
-        clearAttemptStyles();
+        reset();
         mCurrentAttempt = new Attempt(kind, "");
         addAttemptStyle(kind);
         title.setText(kind.getDisplayName());
         setTimerText(mCurrentAttempt.getRemainingSeconds());
+        mTimeline = new Timeline();
+        mTimeline.setCycleCount(kind.getTotalSeconds());
+        mTimeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1), e -> {
+            mCurrentAttempt.tick();
+            setTimerText(mCurrentAttempt.getRemainingSeconds());
+        }));
+        mTimeline.setOnFinished(e -> {
+            saveCurrentAttempt();
+            mApplause.play(); // *mApplause da mTimeline gibi play edilir*
+            prepareAttempt(mCurrentAttempt.getKind() == AttemptKind.FOCUS ?
+                    AttemptKind.BREAK : AttemptKind.FOCUS);
+        });
+    }
+
+    private void saveCurrentAttempt() {
+        mCurrentAttempt.setMessage(message.getText());
+        mCurrentAttempt.save();
+    }
+
+    private void reset() {
+        clearAttemptStyles();
+        if (mTimeline != null && mTimeline.getStatus() == Animation.Status.RUNNING) {
+            mTimeline.stop();
+        }
+    }
+
+    public void playTimer() {
+        mTimeline.play();
+    }
+
+//    not used yet
+    public void pauseTimer() {
+        mTimeline.pause();
     }
 
     private void addAttemptStyle(AttemptKind kind) {
@@ -76,5 +108,10 @@ public class Home {
 
     public void DEBUG(ActionEvent actionEvent) {
         System.out.println("HI MOM");
+    }
+
+    public void handleRestart(ActionEvent actionEvent) {
+        prepareAttempt(AttemptKind.FOCUS);
+        playTimer();
     }
 }

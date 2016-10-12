@@ -28,7 +28,7 @@
            GridPane.columnIndex="0"/>
 
     <!--naming allows us to reference it specifically in the controller-->
-    <TextField style="fx:id: firstName"
+    <TextField fx:id="firstName"
                GridPane.rowIndex="1"
                GridPane.columnIndex="1"/>
 
