@@ -106,20 +106,18 @@ public class Home {
 
     private void addAttemptStyle(AttemptKind kind) {
         container.getStyleClass().add(kind.toString().toLowerCase());
+        // background renk değişimi sağlar
     }
 
     private void clearAttemptStyles() {
         // replaces the play/resume icon with pause icon when time is finished
         container.getStyleClass().remove("playing"); // *play icon geri gelir*
 
-//        *önceki stylelar silinerek css'de yazılan son break style'ın focus'u override etmesi engelleniyor*
+//        *önceki stylelar (focus ve break selektörlerine ait bg colorlar) silinerek
+//          css'de yazılan son break style'ın focus'u override etmesi engelleniyor*
         for (AttemptKind kind : AttemptKind.values()) {
             container.getStyleClass().remove(kind.toString().toLowerCase());
         }
-    }
-
-    public void DEBUG(ActionEvent actionEvent) {
-        System.out.println("HI MOM");
     }
 
     public void handleRestart(ActionEvent actionEvent) {

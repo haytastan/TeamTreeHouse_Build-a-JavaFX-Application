@@ -40,6 +40,7 @@ public class Attempt {
                 '}';
     }
 
+    // *this ile kendi toString metodunu çağırmasına dikkat*
     public void save() {
         System.out.printf("Saving: %s %n", this);
     }
